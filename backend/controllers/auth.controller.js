@@ -4,7 +4,6 @@ import gentoken from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
 	try {
-        console.log(req.body)
 		const { fullname, username, password, confirmPassword, gender } = req.body;
 
 		if (password !== confirmPassword) {
@@ -63,7 +62,7 @@ export const login = async (req, res) => {
 
 		res.status(200).json({
 			_id: user._id,
-			fullName: user.fullName,
+			fullName: user.fullname,
 			username: user.username,
 			profilePic: user.profilePic,
 		});

@@ -1,13 +1,12 @@
-import useGetConversations from "../../hooks/useGetConversations";
-import { getRandomEmoji } from "../../utils/emojis";
-import Conversation from "./Conversation";
+import useGetConversations from "../../hooks/useGetConversations.js";
+import { getRandomEmoji } from "../../utils/emojis.js";
+import Conversation from "./Conversation.jsx";
 
 const Conversations = () => {
 	const { loading, conversations } = useGetConversations();
-	const conversationsArray = Array.isArray(conversations) ? conversations : [];
 	return (
-		<div className='py-2 flex flex-col overflow-auto'>
-			{conversationsArray.map((conversation, idx) => (
+		<div className='py-2 flex flex-col overflow-auto font-sans'>
+			{conversations.map((conversation, idx) => (
 				<Conversation
 					key={conversation._id}
 					conversation={conversation}

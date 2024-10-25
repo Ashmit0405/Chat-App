@@ -7,22 +7,21 @@ import { ApiResponse } from "../utils/apiResponse.js";
 export const sendMessage = async (req, res) => {
 	try {
 		const { message } = req.body;
-		const { id: receiverId } = req.params;
-		const senderId = req.user._id;
-
+		const { id: receiverid } = req.params;
+		const senderid = req.user._id;
 		let conversation = await Conversation.findOne({
-			participants: { $all: [senderId, receiverId] },
+			participants: { $all: [senderid, receiverid] },
 		});
 
 		if (!conversation) {
 			conversation = await Conversation.create({
-				participants: [senderId, receiverId],
+				participants: [senderid, receiverid],
 			});
 		}
 
 		const newMessage = new Message({
-			senderId,
-			receiverId,
+			senderid,
+			receiverid,
 			message,
 		});
 
@@ -31,7 +30,7 @@ export const sendMessage = async (req, res) => {
 		}
 
 		await Promise.all([conversation.save(), newMessage.save()]);
-		const receiverSocketId = getReceiverSocketId(receiverId);
+		const receiverSocketId = getReceiverSocketId(receiverid);
 		if (receiverSocketId) {
 			io.to(receiverSocketId).emit("newMessage", newMessage);
 		}
